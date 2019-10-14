@@ -1,0 +1,249 @@
+<title>表单元素</title>
+
+<div class="layui-card layadmin-header">
+    <script type="text/html" template>
+        <div class="layui-breadcrumb" lay-filter="breadcrumb">
+            <a lay-href="/cpa-task/taskpackageIndex">生产任务</a>
+            <a lay-href="/cpa-task/taskdetail/id={{ layui.router().search.id }}"><cite>任务详情</cite></a>
+            <a><cite>任务反馈</cite></a>
+        </div>
+    </script>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">反馈</div>
+                <div class="layui-card-body">
+                    <script type="text/html" template lay-url="/api/getTaskDetail/?id={{ layui.router().search.id }}" lay-done="layui.data.done(d);">
+                        <form class="layui-form layui-form-pane" lay-filter="filter-form-all">
+                            <fieldset class="layui-elem-field">
+                                <legend>{{d.data.aircraft_number}}</legend>
+                                <div class="layui-field-box">
+                                    任务内容：{{d.data.title}}
+                                    <input type="hidden" name="post-taskID" value="{{d.data.id}}">
+                                </div>
+                            </fieldset>
+
+                            <div class="layui-form-item" pane>
+                                <label class="layui-form-label">进度</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="post-status" lay-skin="switch" lay-text="已完成|未完成"
+                                           value="已完成" checked>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" pane>
+                                <label class="layui-form-label">角色</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="post-role" value="实习者" title="实习者">
+                                    <input type="radio" name="post-role" value="工作者" title="工作者" checked>
+                                    <input type="radio" name="post-role" value="检验" title="检验">
+                                    <input type="radio" name="post-role" value="放行" title="放行">
+                                </div>
+                            </div>
+                            <!--<div class="layui-form-item">-->
+                            <!--<label class="layui-form-label">反馈状态：</label>-->
+                            <!--<div class="layui-input-block">-->
+                            <!--<input type="checkbox" name="status" lay-skin="switch" lay-text="已完成|未完成">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            {{# if(d.data.type != '勤务'){ }}
+                            <input type="hidden" name="post-isCommonTask" value="True">
+                            <input type="hidden" name="post-type" value="Create">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">工时选择</label>
+                                <div class="layui-input-block">
+                                    <select name="post-hour" lay-verify="required" lay-filter="filter-hour">
+                                        <option value=""></option>
+                                        <option value="0.1">10%</option>
+                                        <option value="0.2">20%</option>
+                                        <option value="0.3">30%</option>
+                                        <option value="0.4">40%</option>
+                                        <option value="0.5">50%</option>
+                                        <option value="0.6">60%</option>
+                                        <option value="0.7">70%</option>
+                                        <option value="0.8">80%</option>
+                                        <option value="0.9">90%</option>
+                                        <option value="1.0">100%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {{# } else { }}
+                            <input type="hidden" name="post-isCommonTask" value="False">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">工作项目</label>
+                                <div class="layui-form-mid layui-word-aux"> 请点击您完成的所有勤务工作</div>
+                            </div>
+                            <div class="layui-form-item" lay-verify="mustChecked" lay-verType="tips">
+                                    {{# var dataList = JSON.parse(d.data.standardlib_desc); }}
+                                    {{# for (let i in dataList['data']){ }}
+                                    <input type="checkbox" name="post-hour-{{ i }}" title="{{ dataList['data'][i][0] }}">
+                                    {{# } }}
+
+                            </div>
+                            {{# } }}
+
+
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <textarea name="post-notes" placeholder="" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="post-rate" id="rate01" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">自我评价</label>
+                                <div>
+                                    <div id="test-rate-dome4"></div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="filter-form-submit">提交</button>
+                                    <button class="layui-btn layui-btn-normal" onclick="history.back(-1);">返回</button>
+                                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                                </div>
+                            </div>
+                        </form>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="/static/terminalInfo.js"></script>
+<script>
+    layui.data.done = function (d) {
+        layui.use(['admin', 'form', 'rate', 'element'], function () {
+            var $ = layui.$
+                , admin = layui.admin
+                , element = layui.element
+                , form = layui.form
+                , rate = layui.rate
+                , active = {
+                set: function (othis) {
+                    var THIS = 'layui-bg-normal'
+                        , key = othis.data('key')
+                        , options = {};
+
+                    othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                    options[key] = othis.data('value');
+                    ins3.reload(options);
+                }
+            };
+
+            rate.render({
+                elem: '#test-rate-dome4'
+                , value: 0
+                , half: false
+                , text: true
+                , choose: function (value) {
+                    $("#rate01").val(value);
+                }
+            });
+
+            form.render(null, 'filter-form-all');
+            element.render('breadcrumb', 'breadcrumb');
+
+            form.on('submit(filter-form-submit)', function (data) {
+                data.field['termInfo'] = JSON.stringify({'term':browser,'ip':returnCitySN["cip"]+','+returnCitySN["cname"]});
+                console.log(data.field); //当前容器的全部表单字段，名值对形式：{name: value}
+                admin.req({
+                    method:"POST",
+                    url:"/api/postTaskFeedback/",
+                    data:data.field,
+                    success: function (data, textStatus) {
+                    if (data.code === 0) {
+                        layer.alert(data.msg, {icon: 1}, function (index) {
+                            window.location.href = "javascript:history.go(-1)";
+                            layer.close(index);
+                        });
+                    } else {
+                        layer.alert(data.msg, {icon: 2}, function (index) {
+                            layer.close(index);
+                        });
+                    }
+                    },
+                });
+                return false;
+            });
+
+            form.verify({
+                mustChecked: function (value, item){
+                    var elem = $(item).find('div.layui-form-checked')
+                    if (elem.length === 0){
+                        return '至少选中一项'
+                    }
+                }
+            })
+
+            $('.test-carousel-demoTest .layui-btn').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+    };
+
+    //
+    // layui.use(['admin', 'form', 'rate','element'], function(){
+    //   var $ = layui.$
+    //   ,admin = layui.admin
+    //   ,element = layui.element
+    //   ,form = layui.form
+    //   ,rate = layui.rate
+    //   , active = {
+    //       set: function(othis){
+    //         var THIS = 'layui-bg-normal'
+    //         ,key = othis.data('key')
+    //         ,options = {};
+    //
+    //         othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+    //         options[key] = othis.data('value');
+    //         ins3.reload(options);
+    //       }
+    //     };
+    //
+    //   rate.render({
+    //       elem: '#test-rate-dome4'
+    //       ,value: 0
+    //       ,half: true
+    //       ,text: true
+    //       ,choose: function(value){
+    //           $("#rate01").val(value);
+    //       }
+    //     });
+    //
+    //   // form.render(null, 'filter-form-all');
+    //   element.render('breadcrumb', 'breadcrumb');
+    //
+    //   form.on('submit(filter-form-submit)', function(data){
+    //     console.log(data.field); //当前容器的全部表单字段，名值对形式：{name: value}
+    //     $.post("/api/postTaskFeedback/",data.field,function(data,status,xhr){
+    //         console.log("data:"+JSON.stringify(data.receive));
+    //         console.log("status:"+status);
+    //
+    //         if(status === 'success' && data.code === 0){
+    //                 layer.alert('工时反馈成功',{icon: 1},function(index){
+    //                   window.location.href="javascript:history.go(-1)";
+    //                   layer.close(index);
+    //                 });
+    //         }else{
+    //             layer.alert(data.msg,{icon: 2},function(index){
+    //                   layer.close(index);
+    //                 });
+    //         }
+    //     },'json');
+    //     return false;
+    //   });
+    //
+    //   $('.test-carousel-demoTest .layui-btn').on('click', function(){
+    //       var othis = $(this), type = othis.data('type');
+    //       active[type] ? active[type].call(this, othis) : '';
+    //     });
+    // });
+</script>

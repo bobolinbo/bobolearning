@@ -1,0 +1,33 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "name": "cpa-task",
+      "title": "生产任务",
+      "icon": "layui-icon-home",
+      "list": [
+        {
+          "title": "任务中心",
+          "jump": "CPA/task/taskpackageIndex"
+        },
+        {
+          "title": "我的任务",
+          "jump": "CPA/task/mytask"
+        },
+        {
+          "title": "已反馈任务",
+          "jump": "CPA/task/myfeedback"
+        },
+        {
+          "title": "反馈记录",
+          "jump": "CPA/task/feedbackRecord"
+        },
+        {
+          "title": "人员评价",
+          "jump": "CPA/task/evaluteIndex"
+        }
+      ]
+    }
+  ]
+}

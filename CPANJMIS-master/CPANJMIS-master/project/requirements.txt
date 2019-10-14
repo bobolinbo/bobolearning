@@ -1,0 +1,9 @@
+pillow
+django
+django-import-export==1.2.0
+pycrypto
+mysqlclient
+PyMySQL
+djangorestframework
+django-guardian
+pygments

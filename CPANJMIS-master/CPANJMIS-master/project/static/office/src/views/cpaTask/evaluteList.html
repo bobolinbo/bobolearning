@@ -1,0 +1,88 @@
+<title>表单元素</title>
+
+<div class="layui-card layadmin-header">
+    <script type="text/html" template>
+        <div class="layui-breadcrumb" lay-filter="breadcrumb">
+            <a lay-href="/cpa-task/taskpackageIndex">生产任务</a>
+            <a lay-href="/cpa-task/evaluteIndex">人员评价</a>
+            <a><cite>列表</cite></a>
+        </div>
+    </script>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card layui-form" lay-filter="filter-form-all">
+                <div class="layui-card-header">选择</div>
+                <div class="layui-card-body layui-row layui-col-space10">
+                    <div class="layui-card-body">
+                        <table class="layui-hide" id="table_01" lay-filter="table_01"></table>
+                        <script type="text/html" id="table-toolbar">
+                          <a class="layui-btn layui-btn-xs" lay-event="evalute">评价</a>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  layui.use(['admin', 'table'], function(){
+    var table = layui.table
+    ,admin = layui.admin
+    ,router = layui.router();
+    table.render({
+      size:'sm'
+      ,elem: '#table_01'
+
+      // ,url: './json/table/user.js'
+      ,url:'/api/getEvaluteList'
+      ,where:{
+          format:'json',
+          show:layui.router().search.show
+        // id:
+      }
+      // ,width: admin.screen() > 1 ? 892 : ''
+      ,height: 332
+      ,cellMinWidth: 50
+      ,cols: [[
+        {field:"name", width: '51%',title: '姓名', sort: true, fixed: 'left'}
+        ,{align:'center', width: '50%',title: '操作',fixed: 'right', toolbar: '#table-toolbar'}
+      ]]
+      ,page: true
+    });
+
+    //监听工具条
+    table.on('tool(table_01)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'evalute'){
+        location.hash = "/cpa-task/evaluteDetail/name="+data.name+"/id="+data.id
+      }
+    });
+
+    var $ = layui.$, active = {
+      // getCheckData: function(){ //获取选中数据
+      //   var checkStatus = table.checkStatus('test-table-operate')
+      //   ,data = checkStatus.data;
+      //   layer.alert(JSON.stringify(data));
+      // }
+      // ,getCheckLength: function(){ //获取选中数目
+      //   var checkStatus = table.checkStatus('test-table-operate')
+      //   ,data = checkStatus.data;
+      //   layer.msg('选中了：'+ data.length + ' 个');
+      // }
+      // ,isAll: function(){ //验证是否全选
+      //   var checkStatus = table.checkStatus('test-table-operate');
+      //   layer.msg(checkStatus.isAll ? '全选': '未全选')
+      // }
+    };
+
+    $('.test-table-operate-btn .layui-btn').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+</script>

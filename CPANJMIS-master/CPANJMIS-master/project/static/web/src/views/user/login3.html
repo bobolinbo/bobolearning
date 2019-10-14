@@ -1,0 +1,104 @@
+
+<script type="text/html" template>
+  <link rel="stylesheet" href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}-1" media="all">
+</script>
+
+<div class="layui-fluid" id="LAY-component-layer-list">
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+
+  <div class="layadmin-user-login-main">
+    <div class="layadmin-user-login-box layadmin-user-login-header">
+      <h2>维修生产系统</h2>
+    </div>
+      <div class="layui-card-body">
+          <div class="layui-btn-container layadmin-layer-demo" >
+              <button class="layui-btn layui-btn-fluid" data-type="login1" id="login1">点击获取企业微信授权</button>
+              <button class="layui-btn layui-btn-fluid layui-btn-disabled" id="login-disable">请在微信/企业微信中打开</button>
+          </div>
+      </div>
+
+  </div>
+
+  <div class="layui-trans layadmin-user-login-footer">
+    <p>© 2019 CPANJ</p>
+  </div>
+</div>
+</div>
+<script>
+function getUrlParam(name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+         if (r != null) return unescape(r[2]);
+         return null;
+}
+
+layui.use(['admin', 'layer'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,element = layui.element
+  ,layer = layui.layer;
+
+  element.render();
+
+  var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+  if (ua.match(/MicroMessenger/i) == "micromessenger" || ua.match(/wxwork/i) == "vxwork") {
+      $("#login1").attr("style","display:block;");
+      $("#login-disable").attr("style","display:none;");
+  }else{
+      $("#login1").attr("style","display:none;");
+      $("#login-disable").attr("style","display:block;");
+  }
+  if(getUrlParam("code")){
+      document.getElementById("login1").innerHTML = "企业微信登录";
+  }
+  /* 触发弹层 */
+  var active = {
+      login1: function () {
+          var iii = layer.load(1, {shade: [0.6, '#fff']});
+          var redirectUrl = "";
+          if(location.href.split('#')[1].split('redirect=')[1])redirectUrl = location.href.split('#')[1].split('redirect=')[1];
+
+          var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe736c12ef5dc6c05&redirect_uri=' + location.href.split('#')[0] + '&response_type=code&scope=SCOPE&state='+redirectUrl+'#wechat_redirect';
+
+          var code = getUrlParam("code");
+          if (!code) {
+            window.location = url;
+          } else {
+              admin.req({
+                  type: 'GET',
+                  url: '/api/account/LA_login_auth/',
+                  dataType: 'json',
+                  data: {
+                    code: code, state:getUrlParam("state")
+                  },
+                  success: function (data) {
+                    if (data.code === 0) {
+                        layer.alert(data.msg, {icon: 1}, function (index) {
+                            var setter = layui.setter;
+                            layui.data(setter.tableName, {
+                              key: setter.request.tokenName
+                              , value: "it is a bug!"
+                            });
+                            window.location.href = "index.html#"+getUrlParam("state");
+                            layer.close(index);
+                        });
+                    } else {
+                        layer.alert(data.msg, {icon: 2}, function (index) {
+                            layer.close(index);
+                        });
+                    }
+                  },
+                  error: function (error) {
+                    throw new Error(error)
+                  }
+               });
+          }
+
+      }
+  };
+  $('#LAY-component-layer-list .layadmin-layer-demo .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] && active[type].call(this);
+  });
+})
+</script>

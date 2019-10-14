@@ -1,0 +1,88 @@
+
+
+  <title>数据操作 - 数据表格</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="/CPA/task/taskpackageIndex">生产任务</a>
+      <a><cite>已反馈任务</cite></a>
+    </div>
+  </div>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+
+            <table class="layui-hide" id="test-table-operate" lay-filter="test-table-operate"></table>
+
+            <script type="text/html" id="test-table-operate-barDemo">
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['admin', 'table'], function(){
+    var table = layui.table
+    ,admin = layui.admin
+    ,router = layui.router();
+    table.render({
+      size:'sm'
+      ,elem: '#test-table-operate'
+      // ,url: './json/table/user.js'
+      ,url:'/api/getMyFeedbackTask'
+      ,where:{
+        format:'json'
+        // id:
+      }
+      // ,width: admin.screen() > 1 ? 892 : ''
+      ,height: 332
+      ,cellMinWidth: 50
+      ,cols: [[
+        {field:"aircraft_number", width: '20%',title: '飞机', sort: true, fixed: 'left'}
+        ,{field:'taskname', width: '44%',title: '任务'}
+        ,{field:'force', width: '19%',title: '系数'}
+        ,{align:'center', width: '20%',title: '操作',fixed: 'right', toolbar: '#test-table-operate-barDemo'}
+      ]]
+      ,page: true
+    });
+
+    //监听工具条
+    table.on('tool(test-table-operate)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'edit'){
+        layer.alert('编辑行：<br>'+ JSON.stringify(data))
+      }else if(obj.event === 'seedetail'){
+        location.hash = "/CPA/task/taskdetail/id="+data.id
+      }
+    });
+
+    var $ = layui.$, active = {
+      // getCheckData: function(){ //获取选中数据
+      //   var checkStatus = table.checkStatus('test-table-operate')
+      //   ,data = checkStatus.data;
+      //   layer.alert(JSON.stringify(data));
+      // }
+      // ,getCheckLength: function(){ //获取选中数目
+      //   var checkStatus = table.checkStatus('test-table-operate')
+      //   ,data = checkStatus.data;
+      //   layer.msg('选中了：'+ data.length + ' 个');
+      // }
+      // ,isAll: function(){ //验证是否全选
+      //   var checkStatus = table.checkStatus('test-table-operate');
+      //   layer.msg(checkStatus.isAll ? '全选': '未全选')
+      // }
+    };
+
+    $('.test-table-operate-btn .layui-btn').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

@@ -1,0 +1,72 @@
+
+
+  <title>开启单元格编辑 - 数据表格</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">生产任务</a>
+      <a><cite>任务分配</cite></a>
+    </div>
+  </div>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <table class="layui-hide" id="table01" lay-filter="table01"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['admin', 'table'], function(){
+    var table = layui.table
+        ,admin = layui.admin;
+    //startLoading = layer.load(1);
+    table.render({
+      elem: '#table01'
+      ,url: '/api/getActivateTask/'
+      ,limit:9999
+      ,cols: [[
+        {field:'position', title:'机位', width:'6%', edit: 'text', sort: true}
+        ,{field:'aircraft_number', width:'7%', title:'飞机号', sort: true}
+        ,{field:'title', width:'45%', title:'任务'}
+        ,{field:'fangxing', width:'10%', title:'放行人员', sort: true, edit: 'text'}
+        ,{field:'leader', width:'10%', title:'负责人', edit: 'text', sort: true}
+        ,{field:'assignedTo', width:'22%', title:'协助', sort: true, edit: 'text'}
+
+      ]]
+      //,done: function () {
+       //     layer.close(startLoading);
+     // }
+    });
+
+    //监听单元格编辑
+    table.on('edit(table01)', function(obj){
+        var value = obj.value //得到修改后的值
+            ,data = obj.data //得到所在行所有键值
+            ,field = obj.field; //得到字段
+            admin.req({
+              method:"POST",
+              url: '/api/postAssignTask/'
+              ,data: {
+                  value:value
+                  ,data:data
+                  ,field:field
+                }
+              ,success: function (data, textStatus) {
+                  if (data.code === 0) {
+                      layer.msg(data.msg, {
+                        offset: '15px'
+                      });
+                  }
+              }
+          });
+
+    });
+
+  });
+  </script>

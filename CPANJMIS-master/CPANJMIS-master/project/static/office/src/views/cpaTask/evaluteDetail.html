@@ -1,0 +1,261 @@
+<title>表单元素</title>
+
+<div class="layui-card layadmin-header">
+    <script type="text/html" template>
+        <div class="layui-breadcrumb" lay-filter="breadcrumb">
+            <a lay-href="/cpa-task/taskpackageIndex">生产任务</a>
+            <a lay-href="/cpa-task/evaluteIndex">人员评价</a>
+            <a><cite>评价明细</cite></a>
+        </div>
+    </script>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <script type="text/html" template lay-done="layui.data.done(d);">
+                <div class="layui-card-header">请对<b style="color: red">{{ decodeURI(layui.router().search.name) }}</b>进行评价</div>
+                <div class="layui-card-body layui-row layui-col-space10">
+                        <form class="layui-form" lay-filter="filter-form-all" action="">
+                            <input type="hidden" name="id" id="id" value={{ layui.router().search.id }}>
+                            <input type="hidden" name="rate01" id="rate01" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">综合</label>
+                                <div id="rate-zh"></div>
+                            </div>
+                            <input type="hidden" name="rate02" id="rate02" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">技能</label>
+                                <div id="rate-jn"></div>
+                            </div>
+                            <input type="hidden" name="rate03" id="rate03" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">态度</label>
+                                <div id="rate-td"></div>
+                            </div>
+                            <input type="hidden" name="rate04" id="rate04" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">团队</label>
+                                <div id="rate-tuandui"></div>
+                            </div>
+                            <input type="hidden" name="rate05" id="rate05" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">服务</label>
+                                <div id="rate-fw"></div>
+                            </div>
+                            <input type="hidden" name="rate06" id="rate06" value="0">
+                            <div class="layui-row">
+                                <label class="layui-form-label">判断</label>
+                                <div id="rate-pd"></div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="filter-form-submit">提交</button>
+                                </div>
+                            </div>
+
+                        </form>
+                </div>
+                </script>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header">评星标准</div>
+                <div class="layui-card-body">
+                  <div class="layui-collapse" lay-filter="component-panel">
+                    <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">综合评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：对工作要求茫然无知，工作疏忽，工作未完成</p>
+                        <p>二星：维修工作虽经过指导，但工作效率低下</p>
+                        <p>三星：在指导下承担部分工作，任务完成较好</p>
+                        <p>四星：能有计划的完成工作，承担较多的工作量</p>
+                        <p>五星：出色完成工作，学识经验能触类旁通，承担极多的工作量</p>
+                      </div>
+                    </div>
+                    <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">技能评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：对工作必须技能不熟悉，日常工作难以完成</p>
+                        <p>二星：技能程度稍感不足，执行任务常需请教他人</p>
+                        <p>三星：专业技能一般，但对完成工作尚无阻碍</p>
+                        <p>四星：有相当的专业技能，足以应付本职工作</p>
+                        <p>五星：极丰富的专业技能，能充分完成本职工作</p>
+                      </div>
+                    </div>
+                    <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">态度评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：精神不振，不满现实，敷衍了事，无责任感，做事粗心大意成</p>
+                        <p>二星：交付的工作需督促方能完成，工作时有疏漏</p>
+                        <p>三星：有责任心，能自动自发</p>
+                        <p>四星：工作努力，分内工作非常完善</p>
+                        <p>五星：任劳任怨，竭尽所能完成任务</p>
+                      </div>
+                    </div>
+                    <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">团队评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：精神散漫，不肯与别人合作</p>
+                        <p>二星：仅在必须协调的工作上与人合作</p>
+                        <p>三星：肯应他人要求帮助别人</p>
+                        <p>四星：爱护团体，常协助别人</p>
+                        <p>五星：与人协调无间，为工作顺利完成尽最大努力</p>
+                      </div>
+                    </div>
+                      <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">服务评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：与机组发生冲突，遭机组投诉</p>
+                        <p>二星：虽解决问题，但不与机组沟通，得不到机组认可</p>
+                        <p>三星：解决问题虽有缺陷，但沟通顺畅还是得到机组的理解和认可</p>
+                        <p>四星：能尽职解决问题，与机组沟通顺畅，机组满意</p>
+                        <p>五星：工作出色，解决问题及时准确，机组褒奖</p>
+                      </div>
+                    </div>
+                      <div class="layui-colla-item">
+                      <h2 class="layui-colla-title">判断评价</h2>
+                      <div class="layui-colla-content">
+                        <p>一星：迟钝、理解判断力不良，经常无法处理事务</p>
+                        <p>二星：理解较迟钝，对复杂事务判断力不够</p>
+                        <p>三星：理解、判断力一般，处理事务不常有错误</p>
+                        <p>四星：理解力强,对事务判断正确,处理力强</p>
+                        <p>五星：理解力极强,对事务判断极正确,创造性的完成工作</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="/static/terminalInfo.js"></script>
+<script>
+    layui.data.done = function (d) {
+        layui.use(['admin', 'form', 'rate'], function () {
+            var $ = layui.$
+                , admin = layui.admin
+                , element = layui.element
+                , form = layui.form
+                , rate = layui.rate
+                ,rateArrs = {
+                        '1': '还需改进'
+                        , '2': '薄弱'
+                        , '3': '正常'
+                        , '4': '完美'
+                        , '5': '超出预期'
+                    };
+            form.render(null, 'filter-form-all');
+            element.render('collapse');
+            rate.render({
+                elem: '#rate-zh'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate01").val(value);
+                }
+            });
+            rate.render({
+                elem: '#rate-jn'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate02").val(value);
+                }
+            });
+            rate.render({
+                elem: '#rate-td'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate03").val(value);
+                }
+            });
+            rate.render({
+                elem: '#rate-tuandui'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate04").val(value);
+                }
+            });
+            rate.render({
+                elem: '#rate-fw'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate05").val(value);
+                }
+            });
+            rate.render({
+                elem: '#rate-pd'
+                , value: 0
+                , half: false
+                , text: true
+                , setText: function(value) { //自定义文本的回调
+                    this.span.text(rateArrs[value] || "");
+                }
+                , choose: function (value) {
+                    $("#rate06").val(value);
+                }
+            });
+
+            form.on('submit(filter-form-submit)', function (data) {
+                        data.field['termInfo'] = JSON.stringify({'term':browser,'ip':returnCitySN["cip"]+','+returnCitySN["cname"]});
+                        console.log(data.field); //当前容器的全部表单字段，名值对形式：{name: value}
+                        admin.req({
+                            method:"POST",
+                            url:"/api/postPersonEvalute/",
+                            data:data.field,
+                            success: function (data, textStatus) {
+                            if (data.code === 0) {
+                                layer.alert(data.msg, {icon: 1}, function (index) {
+                                    window.location.href = "javascript:history.go(-1)";
+                                    layer.close(index);
+                                });
+                            } else {
+                                layer.alert(data.msg, {icon: 2}, function (index) {
+                                    layer.close(index);
+                                });
+                            }
+                            },
+                        });
+                        return false;
+                    });
+
+            form.verify({
+                mustChecked: function (value, item){
+                    var elem = $(item).find('div.layui-form-checked')
+                    if (elem.length === 0){
+                        return '至少选中一项'
+                    }
+                }
+            })
+
+        })
+    }
+</script>

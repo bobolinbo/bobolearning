@@ -1,0 +1,74 @@
+
+
+  <title>简单用法 - 数据表格</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="/cpa-task/taskpackageIndex">生产任务</a>
+      <a><cite>任务明细</cite></a>
+    </div>
+  </div>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+          <div class="layui-card">
+            <!--<div class="layui-card-header">字段集区块</div>-->
+            <div class="layui-card-body">
+                <script type="text/html" template lay-url="/api/getTaskDetail/?id={{ layui.router().search.id }}">
+                    <fieldset class="layui-elem-field">
+                        <legend>B-{{d.data.aircraft_number}}任务明细</legend>
+                        <div class="layui-field-box">
+                          标题：{{d.data.title}}<br>
+
+                            {{# if(d.data.jobcardNo != null){ }}
+                                工卡号：{{ d.data.jobcardNo }}<br>
+                                工卡名称：<u>{{ d.data.jobcardTitle }}</u><br>
+                            {{# } }}
+
+                            {{# if(d.data.ATAChapterChapter != null){ }}
+                                章节：{{d.data.ATAChapterChapter}}-{{d.data.ATAChapterSection}}({{d.data.ATAChapterSubject}})<br>
+                            {{# } }}
+
+                            {{# if(d.data.description != null){ }}
+                            描述：{{d.data.description}}<br>
+                            {{# } }}
+
+                            {{# if(d.data.hour != null){ }}
+                            匹配工时：{{ d.data.hour }}<br>
+                            {{# } }}
+
+                            {{# if(d.data.exec_date != null){ }}
+                            预计执行时间：{{ d.data.exec_date }}<br>
+                            {{# } }}
+
+                            {{# if(d.data.exec_site != null){ }}
+                            预计执行地点：{{ d.data.exec_site }}
+                            {{# } }}
+
+                        </div>
+                    </fieldset>
+                    {{# if(d.data.hadfeedback == true){ }}
+                    <button class="layui-btn layui-btn-disabled" >反馈</button>
+                    {{# }else{ }}
+                    <button class="layui-btn" lay-href= "cpa-task/feedback/id={{ layui.router().search.id }}">反馈</button>
+                    {{# } }}
+                     <button class="layui-btn layui-btn-normal" onclick="history.back(-1);">返回</button>
+
+                </script>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    layui.use(['admin'], function(){
+      var $ = layui.$
+      ,admin = layui.admin
+      ,element = layui.element
+      ,router = layui.router();
+
+
+    });
+  </script>

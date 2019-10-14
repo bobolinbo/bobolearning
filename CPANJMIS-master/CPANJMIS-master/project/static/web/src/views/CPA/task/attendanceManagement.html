@@ -1,0 +1,78 @@
+
+
+  <title>考勤管理</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">生产任务</a>
+      <a><cite>任务分配</cite></a>
+    </div>
+  </div>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+              <script type="text/html" id="toolbarDemo">
+                  <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="addNewList">新增人员列表</button>
+                  </div>
+              </script>
+              <table class="layui-hide" id="table01" lay-filter="table01"></table>
+              <script type="text/html" id="test-table-operate-barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['admin', 'table','layer'], function(){
+    var $ = layui.$
+        ,table = layui.table
+        ,admin = layui.admin
+        ,layer = layui.layer;
+
+    startLoading = layer.load(1);
+
+    table.render({
+      elem: '#table01'
+      ,url: '/api/getAttendanceList/'
+      ,toolbar: '#toolbarDemo'
+      ,defaultToolbar: []
+      ,limit:9999
+      ,cols: [[
+        {field:'datetime', title:'日期', width:'10%', sort: true}
+        ,{field:'department', width:'15%', title:'部门', sort: true}
+        ,{field:'number', width:'5.3%', title:'人数'}
+        ,{field:'member', width:'50%', title:'人员列表'}
+        ,{field:'valid', width:'10%', title:'有效'}
+        ,{align:'center', width: '10%',title: '编辑',fixed: 'right', toolbar: '#test-table-operate-barDemo'}
+      ]]
+      ,done: function () {
+            layer.close(startLoading);
+      }
+    });
+
+    //监听工具条
+    table.on('tool(table01)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'edit'){
+        location.hash = '/CPA/task/modifyAttendance/id='+data.id;
+      }
+    });
+
+
+    //头部工具栏
+    table.on('toolbar(table01)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id);
+        if(obj.event === 'addNewList'){
+            location.hash = "/CPA/task/addAttendance"
+        }
+    });
+
+  });
+  </script>

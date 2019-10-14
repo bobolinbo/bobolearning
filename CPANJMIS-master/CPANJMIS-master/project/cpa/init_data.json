@@ -1,0 +1,33 @@
+[
+  {"model": "basicdata.Site", "pk": 1, "fields": {"name": "北京", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 2, "fields": {"name": "南京", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 3, "fields": {"name": "浦东", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 4, "fields": {"name": "温州", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 5, "fields": {"name": "福州", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 6, "fields": {"name": "厦门", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 7, "fields": {"name": "南昌", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 8, "fields": {"name": "广州", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 9, "fields": {"name": "南宁", "valid": "1"}},
+  {"model": "basicdata.Site", "pk": 10, "fields": {"name": "武汉", "valid": "1"}},
+
+  {"model": "basicdata.AircraftType", "pk": 1,"fields": {"name": "737-300", "valid": "1", "notes": "这是一条测试用的数据，如果您看见， 请告知开发人员删除1"}},
+  {"model": "basicdata.AircraftType", "pk": 2,"fields": {"name": "737-400", "valid": "1", "notes": ""}},
+  {"model": "basicdata.AircraftType", "pk": 3,"fields": {"name": "757-200", "valid": "1", "notes": "这是一条测试用的数据，如果您看见，请告知开发人员删除2"}},
+  {"model": "basicdata.AircraftType", "pk": 4,"fields": {"name": "737-800", "valid": "1", "notes": ""}},
+
+  {"model": "basicdata.ATAChatper", "pk": 1,"fields": {"aircraft_type": 1,"chapter": "34", "section": "28-11", "subject_cn": "惯性系统显示组件", "subject_en": "INERTIAL SYSTEM DISPLAY UNIT"}},
+  {"model": "basicdata.ATAChatper", "pk": 2,"fields": {"aircraft_type": 1,"chapter": "34", "section": "31-42", "subject_cn": "导航组件", "subject_en": "NAVIGATION UNIT"}},
+  {"model": "basicdata.ATAChatper", "pk": 3,"fields": {"aircraft_type": 1,"chapter": "34", "section": "53-00", "subject_cn": "ATC系统", "subject_en": "ATC SYSTEM"}},
+  {"model": "basicdata.ATAChatper", "pk": 4,"fields": {"aircraft_type": 1,"chapter": "34", "section": "58-00", "subject_cn": "GPS系统", "subject_en": "GLOBAL POSITIONING SYSTEM"}},
+  {"model": "basicdata.ATAChatper", "pk": 5,"fields": {"aircraft_type": 1,"chapter": "34", "section": "62-21", "subject_cn": "FMCS飞行管理计算机系统-计算机组件", "subject_en": "FMCS COMPUTER UNIT"}},
+
+  {"model": "basicdata.jobcard", "pk": 1,"fields": {"jobcard_number": "37B1222513B1","version": "11","title_cn": "润滑 - 后缘襟翼球形蜗杆油槽 - 左 ","title_en": "enaaa"}},
+  {"model": "basicdata.jobcard", "pk": 2,"fields": {"jobcard_number": "37B2915912A2","version": "11","title_cn": "更换 - 发动机驱动液压泵油滤 - 右发","title_en": "enbbb"}},
+  {"model": "basicdata.jobcard", "pk": 3,"fields": {"jobcard_number": "37M215881","version": "1","title_cn": "更换EFIS冷却主供气风扇","title_en": "enccc"}},
+  {"model": "basicdata.jobcard", "pk": 4,"fields": {"jobcard_number": "Y737C27100","version": "4","title_cn": "S245襟翼限制电门和S272安定面配平切断电门检查","title_en": "enddd"}},
+
+  {"model": "basicdata.AircraftBasicData", "pk": 1,"fields": {"aircraft_number": "2661", "type": 1, "notes": "这是2661飞机的备注"}},
+  {"model": "basicdata.AircraftBasicData", "pk": 2,"fields": {"aircraft_number": "2882", "type": 1, "notes": "这是2882飞机的备注"}},
+  {"model": "basicdata.AircraftBasicData", "pk": 3,"fields": {"aircraft_number": "2891", "type": 2, "notes": "这是2891飞机的备注"}},
+  {"model": "basicdata.AircraftBasicData", "pk": 4,"fields": {"aircraft_number": "2831", "type": 3, "notes": "这是2831飞机的备注"}}
+]

@@ -1,0 +1,156 @@
+<title>表单元素</title>
+
+<div class="layui-card layadmin-header">
+    <script type="text/html" template>
+        <div class="layui-breadcrumb" lay-filter="breadcrumb">
+            <a lay-href="/cpa-task/taskpackageIndex">生产任务</a>
+            <a><cite>新建任务</cite></a>
+        </div>
+    </script>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card layui-form" lay-filter="filter-form-all">
+                <div class="layui-card-header">增加</div>
+                <div class="layui-card-body layui-row layui-col-space10">
+                    <script type="text/html" template lay-url="/api/getAddTaskTable/" lay-done="layui.data.done(d);">
+                            <div class="layui-col-md6">
+                                <select name="task-type" lay-verify="required">
+                                  <option value="">选择 任务类型</option>
+                                    {{# for (let i in d['data']['typeList']){ }}
+                                        {{# if(d['data']['typeList'][i][0] === "勤务" || d['data']['typeList'][i][0] === "工卡"){ }}
+                                  <option value={{ d['data']['typeList'][i][1] }} disabled>{{ d['data']['typeList'][i][0] }}</option>
+                                        {{# }else{ }}
+                                  <option value={{ d['data']['typeList'][i][1] }}>{{ d['data']['typeList'][i][0] }}</option>
+                                        {{# } }}
+                                    {{# } }}
+                                </select>
+                            </div>
+                            <div class="layui-col-md6">
+                                <select name="ATA" lay-verify="required" lay-search>
+                                  <option value="">选择 章节</option>
+                                    {{# for (let i in d['data']['ATAList']){ }}
+                                  <option value={{ d['data']['ATAList'][i][0] }}>{{ d['data']['ATAList'][i][1] }}-{{ d['data']['ATAList'][i][2] }}({{ d['data']['ATAList'][i][3] }})</option>
+                                    {{# } }}
+                                </select>
+                            </div>
+                            <div class="layui-col-md6">
+                                <select name="Aircraft" lay-verify="required" lay-search>
+                                  <option value="">选择 飞机</option>
+                                    {{# for (let i in d['data']['AircraftList']){ }}
+                                  <option value={{ d['data']['AircraftList'][i][0] }}>{{ d['data']['AircraftList'][i][1] }}[{{ d['data']['AircraftList'][i][2] }}]</option>
+                                    {{# } }}
+                                </select>
+                            </div>
+                            <div class="layui-col-md12">
+                                <input type="text" name="task-title" placeholder="输入 任务标题" autocomplete="off" class="layui-input" lay-verify="taskTitle">
+                            </div>
+                            <div class="layui-col-md12">
+                                <textarea name="task-desc" placeholder="输入 任务描述（非必填）" class="layui-textarea"></textarea>
+                            </div>
+                            <div class="layui-col-md6">
+                                <select name="task-package" lay-verify="required">
+                                  <option value="">选择 任务归属包</option>
+                                    {{# for (let i in d['data']['TaskPackageList']){ }}
+                                  <option value={{ d['data']['TaskPackageList'][i][0] }}>{{ d['data']['TaskPackageList'][i][1] }}</option>
+                                    {{# } }}
+                                </select>
+                            </div>
+                            <div class="layui-col-md6">
+                                <input type="text" name="task-hour" placeholder="输入 标准工时（数字）" autocomplete="off" class="layui-input" lay-verify="required|number">
+                            </div>
+                            <div class="layui-col-md6">
+                                <input type="text" name="task-man" placeholder="输入 标准人力（数字）" autocomplete="off" class="layui-input" lay-verify="required|number">
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="filter-form-submit">提交</button>
+                                    <button class="layui-btn layui-btn-normal" onclick="history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="/static/terminalInfo.js"></script>
+<script>
+
+    layui.data.done = function (d) {
+        layui.use(['admin', 'form', 'rate', 'element'], function () {
+            var $ = layui.$
+                , admin = layui.admin
+                , element = layui.element
+                , form = layui.form
+                , rate = layui.rate
+                , active = {
+                set: function (othis) {
+                    var THIS = 'layui-bg-normal'
+                        , key = othis.data('key')
+                        , options = {};
+
+                    othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                    options[key] = othis.data('value');
+                    ins3.reload(options);
+                }
+            };
+
+            //自定义验证规则
+            form.verify({
+                taskTitle: function(value){
+                  if(value.length < 2){
+                    return '任务标题需至少输入2个字符';
+                  }
+                }
+            });
+
+            form.render(null, 'filter-form-all');
+            element.render('breadcrumb', 'breadcrumb');
+
+            form.on('submit(filter-form-submit)', function (data) {
+                data.field['termInfo'] = JSON.stringify({'term':browser,'ip':returnCitySN["cip"]+','+returnCitySN["cname"]});
+                console.log(data.field); //当前容器的全部表单字段，名值对形式：{name: value}
+                admin.req({
+                    method:"POST",
+                    url:"/api/postNewTask/",
+                    data:data.field,
+                    success: function (data, textStatus) {
+                    if (data.code === 0) {
+                        layer.alert(data.msg, {icon: 1}, function (index) {
+                            location.hash = "/cpa-task/feedback/id="+data.data.id;
+                            layer.close(index);
+                        });
+                    } else {
+                        layer.alert(data.msg, {icon: 2}, function (index) {
+                            layer.close(index);
+                        });
+                    }
+                    },
+                });
+                return false;
+            });
+
+            form.verify({
+                mustChecked: function (value, item){
+                    var elem = $(item).find('div.layui-form-checked')
+                    if (elem.length === 0){
+                        return '至少选中一项'
+                    }
+                }
+            });
+
+
+            $('.test-carousel-demoTest .layui-btn').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+    };
+
+</script>
